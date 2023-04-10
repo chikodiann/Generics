@@ -3,25 +3,44 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SportsTeam {
+record  Affiliation(String name, String type, String countryCode) {
+    @Override
+    public String toString() {
+        return name + " (" + type + " in " + countryCode + ")";
+    }
+}
+
+public class Team<T extends Player, S> {
     private String teamName;
-    private List<Player> teamMembers = new ArrayList<>();
+    private List<T> teamMembers = new ArrayList<>();
     private int totalWins = 0;
     private int totalLosses= 0;
     private  int totalTies = 0;
+    private S affiliation;
 
-    public SportsTeam(String teamName) {
+    public Team(String teamName, Affiliation philly) {
         this.teamName = teamName;
     }
 
-    public void addTeamMember(Player player) {
-        if (!teamMembers.contains(player)) {
-            teamMembers.add(player);
+    public Team(S affiliation) {
+        this.affiliation = affiliation;
+    }
+
+    public Team(String teamName, String s) {
+
+    }
+
+    public void addTeamMember(T t) {
+        if (!teamMembers.contains(t)) {
+            teamMembers.add(t);
         }
     }
     public void listTeamMembers() {
         System.out.println(teamName + " Roster:");
-        System.out.println(teamMembers);
+        System.out.println(affiliation == null ? "" : " AFFILIATION: "+ affiliation);
+        for (T t : teamMembers) {
+            System.out.println(t.name());
+        }
     }
 
     public int ranking() {
